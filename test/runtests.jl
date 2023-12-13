@@ -41,8 +41,14 @@ Aqua.test_all(LengthFreeStaticMatrices)
         @test view(x, 1, :) === x[1,:]
         @test view(x, :, 1) === x[:,1]
         @test view(x, 1, 1)[] === x[1,1]
-        @test eachcol(x) == eachcol(SMatrix(x))
-        @test eachrow(x) == eachrow(SMatrix(x))
+        @test all(eachcol(x) .=== eachcol(SMatrix(x)))
+        @test all(eachrow(x) .=== eachrow(SMatrix(x)))
+        # In Julia versions before 1.9, eachrow and eachcol returned iterators
+        # The tests below break in those versions
+        if VERSION >= v"1.9"
+            @test eachcol(x) == eachcol(SMatrix(x))
+            @test eachrow(x) == eachrow(SMatrix(x))
+        end
     end
     @testset "Other functions" begin
         @test zero(LSMatrix{3,3,Int}) == zero(SMatrix{3,3,Int})
