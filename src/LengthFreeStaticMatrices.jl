@@ -36,7 +36,14 @@ struct LSMatrix{M,N,T} <: StaticMatrix{M,N,T}
     LSMatrix{M,N,T}(t::Tuple) where {M,N,T} = new(nest_tuple(T, t, Size(M,N)))
 end
 
-const SqSMatrix{D,T} = LSMatrix{D,D,T}
+"""
+    SquareLSMatrix{D,T} (alias for LSMatrix{D,D,T})
+
+A data structure with equivalent behavior to `StaticArraysCore.SMatrix{D,D,T,L}`, but lacking the 
+`L` type parameter representing the length of the underlying tuple. This is accomplished by storing 
+the matrix coefficients as a `NTuple{D,NTuple{D,T}}`.
+"""
+const SquareLSMatrix{D,T} = LSMatrix{D,D,T}
 
 #---StaticArrays API implementation----------------------------------------------------------------#
 
@@ -69,6 +76,6 @@ function Base.view(
 end
 
 #---Exports----------------------------------------------------------------------------------------#
-export LSMatrix, SqSMatrix
+export LSMatrix, SquareLSMatrix
 
 end # module
