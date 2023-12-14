@@ -7,7 +7,7 @@ import Base: @propagate_inbounds
 
 #---Helper functions-------------------------------------------------------------------------------#
 """
-    LengthFreeStaticMatrices.nest_tuple([::Type{T} = eltype(T)], t::Tuple, ::Size{S})
+    LengthFreeStaticMatrices.nest_tuple([::Type{T} = eltype(t)], t::Tuple, ::Size{S})
 
 Converts a flat tuple `t` into nested tuples `NTuple{S[1],NTuple{S[2],...}}`.
 """
