@@ -71,4 +71,4 @@ end
 #---Exports----------------------------------------------------------------------------------------#
 export LSMatrix, SqSMatrix
 
-end # module ParameterlessStaticMatrices
+end # module
