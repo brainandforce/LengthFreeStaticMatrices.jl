@@ -32,7 +32,15 @@ julia> isbitstype(YetAnotherTest{2,3,Int})
 true
 ```
 
+## Performance
+
+We haven't benchmarked this implementation yet, but a brief glance of LLVM bitcode suggests that the
+performance should be on par with `SMatrix`.
+
 ## Acknowledgements
 
 This functionality was originally implemented by [Thomas Christensen](https://github.com/thchr/) for
 the [Crystalline.jl](https://github.com/thchr/Crystalline.jl) package for square matrices.
+
+[This issue](https://github.com/JuliaLang/julia/issues/8472) on the Julia repository may be of
+interest if you're interested in a language-level solution.
