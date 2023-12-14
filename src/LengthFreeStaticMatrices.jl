@@ -9,7 +9,7 @@ import Base: @propagate_inbounds
 """
     LengthFreeStaticMatrices.nest_tuple([::Type{T} = eltype(t)], t::Tuple, ::Size{S})
 
-Converts a flat tuple `t` into nested tuples `NTuple{S[1],NTuple{S[2],...}}`.
+Converts a flat tuple `t` into nested tuples `NTuple{S[1],NTuple{S[2],...}}` to arbitrary depth.
 """
 function nest_tuple(::Type{T}, t::Tuple, ::Size{S}) where {T,S}
     @assert length(t) ===  prod(S) string(
@@ -49,6 +49,9 @@ const SquareLSMatrix{D,T} = LSMatrix{D,D,T}
 
 #---StaticArrays API implementation----------------------------------------------------------------#
 
+# Define the implementation with Cartesian indices first for bounds checking
+# Linear indexing converts the input to Cartesian indices
+# TODO: should we define IndexStyle() for this type as IndexCartesian()?
 @propagate_inbounds function Base.getindex(x::LSMatrix, a::Int, b::Int)
     @boundscheck all(in.((a,b), axes(x))) || throw(BoundsError(x, (a,b)))
     return x.data[b][a]
@@ -58,6 +61,8 @@ end
 
 Base.Tuple(x::LSMatrix) = NTuple{length(x)}(Iterators.flatten(x.data))
 
+# For arrays that are not matrices, just construct an SArray of the appropriate size
+# TODO: any reason to prefer that the similar type in the 2D case is SMatrix?
 function similar_type(::Type{M}, ::Type{T}, ::Size{S}) where {M<:LSMatrix,T,S}
     length(S) == 2 && return LSMatrix{S[1],S[2],T}
     return SArray{Tuple{S...},T,length(S),prod(S)}
@@ -67,13 +72,17 @@ end
 
 LSMatrix{M,N}(t::Tuple) where {M,N} = LSMatrix{M,N,promote_type(typeof.(t)...)}(t)
 
-#---Views------------------------------------------------------------------------------------------#
-# TODO: if StaticArrays is loaded, add SOneTo to this union
+#---SMatrix-like behavior not implemented by StaticMatrix------------------------------------------#
+
+# This ensures that eachrow() and eachcol() return similar objects to those produced with an SMatrix
+# TODO: SOneTo indices are excluded due to their absence in StaticArraysCore
+#       Add this back in, probably through a weakdep
 function Base.view(
     x::LSMatrix,
     i::Union{Colon, Integer, StaticArray{<:Tuple, Int}, CartesianIndex}...
 ) 
     v = x[i...]
+    # Views of a single element of an SMatrix should be a StaticArrays.Scalar (SArray{Tuple{}})
     return v isa eltype(x) ? SArray{Tuple{}}(v) : v
 end
 
