@@ -22,6 +22,8 @@ true
 This package solves this problem by introducing a new type, `LSMatrix{M,N,T}`, which stores its data
 in an `NTuple{M,NTuple{N,T}}`. We also provide the alias `SquareLSMatrix{D,T}` for square matrices.
 ```julia
+julia> using LengthFreeStaticMatrices
+
 julia> struct YetAnotherTest{M,N,T}
            matrix::LSMatrix{M,N,T}
        end
