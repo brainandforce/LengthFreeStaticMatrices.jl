@@ -27,9 +27,11 @@ nest_tuple(t::Tuple, sz::Size) = nest_tuple(eltype(t), t, sz)
 
 #---LSMatrix defintion-----------------------------------------------------------------------------#
 """
-    LSMatrix{M,N,T} <: StaticMatrix{M,N,T}
+    LSMatrix{M,N,T} <: StaticArraysCore.StaticMatrix{M,N,T}
 
-Equivalent to `SMatrix{M,N,T,L}`, but without the type parameter `L` representing the length.
+A data structure with equivalent behavior to `StaticArraysCore.SMatrix{D,D,T,L}`, but lacking the 
+`L` type parameter representing the length of the underlying tuple. This is accomplished by storing 
+the matrix coefficients as a `NTuple{N,NTuple{M,T}}`.
 """
 struct LSMatrix{M,N,T} <: StaticMatrix{M,N,T}
     data::NTuple{N,NTuple{M,T}}
