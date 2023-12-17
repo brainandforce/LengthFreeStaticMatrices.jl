@@ -1,5 +1,9 @@
 # LengthFreeStaticMatrices.jl
 
+[![CI status][ci-status-img]][ci-status-url]
+[![Codecov][codecov-img]][codecov-url]
+[![Aqua.jl][aqua-img]][aqua-url]
+
 Have you ever wanted to include a `SMatrix` as a field for a struct, but realized that you need to
 include a separate length parameter in order to create a pure bits type?
 ```julia
@@ -58,3 +62,10 @@ the [Crystalline.jl](https://github.com/thchr/Crystalline.jl) package for square
 [This issue](https://github.com/JuliaLang/julia/issues/8472) on the Julia repository may be of
 interest if you're interested in a language-level solution to the issue of computing dependent type
 parameters.
+
+[ci-status-img]:    https://github.com/brainandforce/LengthFreeStaticMatrices.jl/workflows/CI/badge.svg
+[ci-status-url]:    https://github.com/brainandforce/LengthFreeStaticMatrices.jl/actions
+[codecov-img]:      https://codecov.io/gh/brainandforce/LengthFreeStaticMatrices.jl/branch/main/graph/badge.svg
+[codecov-url]:      https://codecov.io/gh/brainandforce/LengthFreeStaticMatrices.jl/
+[aqua-img]:         https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg
+[aqua-url]:         https://github.com/JuliaTesting/Aqua.jl
