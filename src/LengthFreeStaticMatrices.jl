@@ -15,7 +15,13 @@ function nest_tuple(::Type{T}, t::Tuple, ::Size{S}) where {T,S}
     @assert length(t) === prod(S) string(
         "Input tuple must have length ", prod(S), " (got length ", length(t), ")."
     )
-    isone(length(S)) && return NTuple{only(S),T}(t)
+    # Specialized implementation for matrices should solve type inference problem
+    if length(S) === 1
+        return NTuple{only(S),T}(t)
+    elseif length(S) === 2
+        (M,N) = S
+        return ntuple(i -> NTuple{M,T}(t[(M * (i-1)) .+ (1:M)]), Val{N}())
+    end
     return ntuple(last(S)) do i
         SS = S[1:end-1]
         index_range = S[end-1]*(i-1) .+ (1:prod(SS))
