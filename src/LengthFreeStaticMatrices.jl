@@ -22,6 +22,8 @@ function nest_tuple(::Type{T}, t::Tuple, ::Size{S}) where {T,S}
         (M,N) = S
         return ntuple(i -> NTuple{M,T}(t[(M * (i-1)) .+ (1:M)]), Val{N}())
     end
+    # This generic implementation is type unstable
+    # Probably best to implement it as a generated function
     return ntuple(last(S)) do i
         SS = S[1:end-1]
         index_range = S[end-1]*(i-1) .+ (1:prod(SS))
