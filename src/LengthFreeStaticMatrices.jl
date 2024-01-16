@@ -12,7 +12,7 @@ import Base: @propagate_inbounds
 Converts a flat tuple `t` into nested tuples `NTuple{S[1],NTuple{S[2],...}}` to arbitrary depth.
 """
 function nest_tuple(::Type{T}, t::Tuple, ::Size{S}) where {T,S}
-    @assert length(t) ===  prod(S) string(
+    @assert length(t) === prod(S) string(
         "Input tuple must have length ", prod(S), " (got length ", length(t), ")."
     )
     isone(length(S)) && return NTuple{only(S),T}(t)
