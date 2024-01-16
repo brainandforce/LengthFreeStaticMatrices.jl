@@ -12,8 +12,12 @@ Aqua.test_all(LengthFreeStaticMatrices)
         t = NTuple{6}(1:6)
         @test nest_tuple(Float64, t, Size(6)) === NTuple{6,Float64}(1:6)
         @test nest_tuple(Float64, t, Size(3,2)) === ((1.0, 2.0, 3.0), (4.0, 5.0, 6.0))
+        @test nest_tuple(Float64, t, Size(2,3,1)) === tuple(
+            ((1.0, 2.0), (3.0, 4.0), (5.0, 6.0))
+        )
         @test nest_tuple(t, Size(6)) === NTuple{6}(1:6)
         @test nest_tuple(t, Size(3,2)) === ((1, 2, 3), (4, 5, 6))
+        @test nest_tuple(t, Size(2,3,1)) === tuple(((1,2), (3,4), (5,6)))
     end
     @testset "Constructors and conversion" begin
         @test LSMatrix{3,2}(t) === x
